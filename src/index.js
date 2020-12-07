@@ -14,6 +14,7 @@ RestModel.register('page-urls', (factory) => {
 
 let pages = RestModel.resolve('pages');
 
+
 // sections.scope(1).resolve('pages').query().get().then(collection => {
 //     console.log(collection);
 //
