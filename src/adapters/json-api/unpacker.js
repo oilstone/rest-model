@@ -10,12 +10,6 @@ class Unpacker {
     constructor(model, payload) {
         this.#model = model;
         this.#payload = payload;
-
-        this.#model.relations.keys.forEach(key => {
-            let relation = this.#model.relations.get(key);
-
-            this.#relationAliases[relation.type || key] = key;
-        });
     }
 
     status() {
@@ -29,6 +23,7 @@ class Unpacker {
     data() {
         let data = this.#payload.data.data;
 
+        this.buildAliasMap();
         this.buildRelationMap();
 
         if (!Array.isArray(data)) {
@@ -93,6 +88,14 @@ class Unpacker {
         }
 
         return record;
+    }
+
+    buildAliasMap() {
+        this.#model.relations.keys.forEach(key => {
+            let relation = this.#model.relations.get(key);
+
+            this.#relationAliases[relation.type || key] = key;
+        });
     }
 
     buildRelationMap() {

@@ -7,15 +7,16 @@ class Collectable extends Record {
 
         return this.$model.http.post(
             this.$path.resolve(),
-            RestModel.adapter.repack(this.$model, this)
+            RestModel.adapter.repack(this.$model, this),
+            RestModel.adapter.requestConfig()
         ).then(response => {
-            this.$fill(RestModel.adapter.unpack(response));
+            this.$fill(RestModel.adapter.unpack(this.$model, response));
 
             this.$model.events.fire('created', this);
 
             return this;
         }).catch(error => {
-            throw RestModel.adapter.unpack(error.response);
+            throw RestModel.adapter.unpack(this.$model, error.response);
         });
     }
 
@@ -24,15 +25,16 @@ class Collectable extends Record {
 
         return this.$model.getHttp().patch(
             this.$path.setKey(this[this.$model.primaryKey]).resolve(),
-            RestModel.adapter.repack(this.$model, this)
+            RestModel.adapter.repack(this.$model, this),
+            RestModel.adapter.requestConfig()
         ).then(response => {
-            this.$fill(RestModel.adapter.unpack(response));
+            this.$fill(RestModel.adapter.unpack(this.$model, response));
 
             this.$model.events.fire('updated', this);
 
             return this;
         }).catch(error => {
-            throw RestModel.adapter.unpack(error.response);
+            throw RestModel.adapter.unpack(this.$model, error.response);
         });
     }
 
@@ -51,7 +53,7 @@ class Collectable extends Record {
 
                 return true;
             }).catch(error => {
-                throw RestModel.adapter.unpack(error.response);
+                throw RestModel.adapter.unpack(this.$model, error.response);
             });
         }
     }

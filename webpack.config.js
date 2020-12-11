@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/rest-model.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'rest-model.js',

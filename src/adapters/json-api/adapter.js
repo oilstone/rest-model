@@ -28,6 +28,14 @@ class Adapter {
         return repacker.data();
     }
 
+    static requestConfig() {
+        return {
+            headers: {
+                'Content-Type': 'application/vnd.api+json'
+            }
+        }
+    }
+
     static params(query) {
         let params = {};
 
