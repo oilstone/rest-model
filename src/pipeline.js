@@ -19,7 +19,7 @@ class Pipeline {
                 break;
             }
 
-            resolved.push(relation.type || piece);
+            resolved.push(relation.foreignModel.type || piece);
 
             model = relation.foreignModel;
         }

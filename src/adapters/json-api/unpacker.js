@@ -42,7 +42,7 @@ class Unpacker {
     record(record) {
         let attributes = Object.assign({}, record.attributes);
 
-        attributes[this.#model.primaryKey] = record.[this.#model.primaryKey];
+        attributes[this.#model.primaryKey] = record[this.#model.primaryKey];
 
         if ('relationships' in record) {
             attributes = Object.assign({}, attributes, this.relations(record.relationships));
@@ -81,10 +81,13 @@ class Unpacker {
 
     mapRelation(type, relation) {
         let record = null;
-        let key = `${type}:${relation.id}`;
 
-        if (key in this.#relationMap) {
-            record = this.record(this.#relationMap[key]);
+        if (relation) {
+            let key = `${type}:${relation.id}`;
+
+            if (key in this.#relationMap) {
+                record = this.record(this.#relationMap[key]);
+            }
         }
 
         return record;

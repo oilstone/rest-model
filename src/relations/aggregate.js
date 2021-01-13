@@ -9,8 +9,8 @@ class Aggregate {
         return typeof this.#items[name] !== 'undefined';
     }
 
-    add(relation) {
-        this.#items[relation.name] = relation;
+    add(name, relation) {
+        this.#items[name] = relation;
     
         return this;
     }

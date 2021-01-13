@@ -1,9 +1,11 @@
+import Registry from "../registry";
+
 class Relation {
     #localModel;
 
     #foreignModel;
 
-    #type;
+    #binding;
 
     constructor(localModel) {
         this.#localModel = localModel;
@@ -22,6 +24,10 @@ class Relation {
     }
 
     getForeignModel() {
+        if (!this.#foreignModel) {
+            this.#foreignModel = Registry.get(this.#binding)
+        }
+
         return this.#foreignModel;
     }
 
@@ -35,26 +41,26 @@ class Relation {
         return this;
     }
 
-    get type() {
-        return this.getType();
-    }
-
-    getType() {
-        return this.#type;
-    }
-
-    bind(type) {
-        this.#type = type;
+    bind(binding) {
+        this.#binding = binding;
 
         return this;
     }
 
+    get binding() {
+        return this.getBinding();
+    }
+
+    getBinding() {
+        return this.#binding;
+    }
+
     hydrate(data) {
         if (Array.isArray(data)) {
-            return this.#foreignModel.collection(data);
+            return this.getForeignModel().collection(data);
         }
 
-        return this.#foreignModel.record(data);
+        return this.getForeignModel().record(data);
     }
 }
 

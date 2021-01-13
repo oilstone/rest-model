@@ -87,7 +87,7 @@ class Collectable extends Query {
     find(id) {
         this.model.events.fire('fetchingOne', this);
 
-        this.model.http.get(this.path.setKey(id).resolve(), this.buildRequestData()).then(response => {
+        return this.model.http.get(this.path.setKey(id).resolve(), this.buildRequestData()).then(response => {
             let record = this.model.record(
                 RestModel.adapter.unpack(this.model, response)
             );

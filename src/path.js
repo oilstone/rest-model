@@ -1,4 +1,4 @@
-import Restmodel from './rest-model';
+import RestModel from './rest-model';
 
 class Path {
     #model;
@@ -33,7 +33,7 @@ class Path {
         if (this.#parent) {
             pieces.push(this.#parent.resolve());
         } else {
-            pieces.push(Restmodel.baseUrl);
+            pieces.push(this.#model.baseUrl || RestModel.baseUrl);
         }
 
         pieces.push(this.#model.type);

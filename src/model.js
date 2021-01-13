@@ -1,6 +1,5 @@
 import Dispatcher from '@oilstone/events';
 import Blender from '@oilstone/blender';
-import Registry from './registry';
 import Aggregate from './relations/aggregate';
 import Factory from './factory';
 import RecordScope from './scopes/record';
@@ -9,6 +8,8 @@ class Model {
     #http;
 
     #type;
+
+    #baseUrl;
 
     #events = new Dispatcher();
 
@@ -21,9 +22,18 @@ class Model {
 
     #primaryKey = 'id';
 
-    constructor(http, type) {
+    constructor(http, type, baseUrl = null) {
         this.#http = http;
         this.#type = type;
+        this.#baseUrl = baseUrl;
+    }
+
+    get http() {
+        return this.getHttp();
+    }
+
+    getHttp() {
+        return this.#http;
     }
 
     get type() {
@@ -34,12 +44,32 @@ class Model {
         return this.#type;
     }
 
-    get http() {
-        return this.getHttp();
+    set type(type) {
+        return this.setType(type);
     }
 
-    getHttp() {
-        return this.#http;
+    setType(type) {
+        this.#type = type;
+
+        return this;
+    }
+
+    get baseUrl() {
+        return this.getBaseUrl();
+    }
+
+    getBaseUrl() {
+        return this.#baseUrl;
+    }
+
+    set baseUrl(url) {
+        return this.setBaseUrl(url);
+    }
+
+    setBaseUrl(url) {
+        this.#baseUrl = url;
+
+        return this;
     }
 
     get events() {
@@ -116,18 +146,22 @@ class Model {
         this.#relations.register(name, () => {
             let relation = Factory.nested(this);
 
-            if (callback) {
-                callback(relation);
-            }
-
-            relation.setForeignModel(
-                Registry.get(relation.type || name)
-            );
+            this.#bootstrapRelation(name, relation, callback);
 
             return relation;
         });
 
         return this;
+    }
+
+    #bootstrapRelation(name, relation, callback) {
+        if (callback) {
+            callback(relation);
+        }
+
+        if (!relation.binding) {
+            relation.bind(name);
+        }
     }
 
     query() {
