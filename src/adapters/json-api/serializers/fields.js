@@ -1,9 +1,9 @@
 class Select {
-    static serialize(model, fields) {
+    static serialize(model, fields, relations) {
         let serialized = {};
         let items = fields.items;
 
-        if (fields.count() === 1 && typeof items[model.type] !== 'undefined') {
+        if (!relations.length && fields.count() === 1 && typeof items[model.type] !== 'undefined') {
             return items[model.type].join();
         }
 

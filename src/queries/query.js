@@ -84,8 +84,9 @@ class Query {
         return this;
     }
 
-    buildRequestData() {
+    buildRequestConfig() {
         return {
+            headers: RestModel.headers(),
             params: RestModel.adapter.params(this),
             paramsSerializer: qs.stringify
         }

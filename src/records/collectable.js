@@ -8,7 +8,7 @@ class Collectable extends Record {
         return this.$model.http.post(
             this.$path.resolve(),
             RestModel.adapter.repack(this.$model, this),
-            RestModel.adapter.requestConfig()
+            {headers: RestModel.adapter.headers()}
         ).then(response => {
             this.$fill(RestModel.adapter.unpack(this.$model, response));
 
@@ -26,7 +26,7 @@ class Collectable extends Record {
         return this.$model.getHttp().patch(
             this.$path.setKey(this[this.$model.primaryKey]).resolve(),
             RestModel.adapter.repack(this.$model, this),
-            RestModel.adapter.requestConfig()
+            {headers: RestModel.adapter.headers()}
         ).then(response => {
             this.$fill(RestModel.adapter.unpack(this.$model, response));
 
@@ -47,7 +47,8 @@ class Collectable extends Record {
             this.$model.events.fire('deleting', this);
 
             return this.$model.http.delete(
-                this.$path.setKey(this[this.$model.primaryKey]).resolve()
+                this.$path.setKey(this[this.$model.primaryKey]).resolve(),
+                {headers: RestModel.adapter.headers()}
             ).then(() => {
                 this.$model.events.fire('deleted', this);
 

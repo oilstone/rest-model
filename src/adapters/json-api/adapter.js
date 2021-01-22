@@ -1,3 +1,4 @@
+import RestModel from '../../rest-model';
 import Unpacker from './unpacker';
 import CollectableQuery from '../../queries/collectable';
 import ExpressionSerializer from './serializers/expression';
@@ -28,12 +29,16 @@ class Adapter {
         return repacker.data();
     }
 
-    static requestConfig() {
-        return {
-            headers: {
-                'Content-Type': 'application/vnd.api+json'
-            }
+    static headers() {
+        let headers = {
+            'Content-Type': 'application/vnd.api+json'
+        };
+
+        if (RestModel.accessToken) {
+            headers.Authorization = 'Bearer ' + RestModel.accessToken
         }
+
+        return headers;
     }
 
     static params(query) {
@@ -49,7 +54,7 @@ class Adapter {
             }
 
             if(query.fields.count() > 0) {
-                params.fields = FieldsSerializer.serialize(query.model, query.fields);
+                params.fields = FieldsSerializer.serialize(query.model, query.fields, query.relations);
             }
 
             if(query.orders.count() > 0) {

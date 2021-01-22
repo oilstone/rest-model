@@ -3,6 +3,7 @@ import Adapter from './adapters/json-api/adapter';
 
 class RestModel {
     static #baseUrl = '';
+    static #accessToken;
     static #adapter = Adapter;
 
     static set baseUrl(url) {
@@ -35,6 +36,22 @@ class RestModel {
 
     static getAdapter() {
         return RestModel.#adapter;
+    }
+
+    static set accessToken(accessToken) {
+        RestModel.setAccessToken(accessToken);
+    }
+
+    static get accessToken() {
+        return RestModel.getAccessToken();
+    }
+
+    static setAccessToken(accessToken) {
+        RestModel.#accessToken = accessToken;
+    }
+
+    static getAccessToken() {
+        return RestModel.#accessToken;
     }
 
     static register(name, callback) {
