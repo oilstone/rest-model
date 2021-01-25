@@ -35,7 +35,7 @@ class Adapter {
         };
 
         if (RestModel.accessToken) {
-            headers.Authorization = 'Bearer ' + RestModel.accessToken
+            headers.Authorization = RestModel.accessToken.toString()
         }
 
         return headers;
