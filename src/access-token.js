@@ -1,11 +1,16 @@
 class AccessToken {
-    #type = 'Bearer';
+    #type;
 
     #value;
 
     #refreshCallback;
 
     #refreshPromise;
+
+    constructor(type, value) {
+        this.#type = type;
+        this.#value = value;
+    }
 
     get type() {
         return this.getType();

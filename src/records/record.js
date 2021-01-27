@@ -28,6 +28,10 @@ class Record {
     }
 
     get $attributes() {
+        return this.$getAttributes();
+    }
+
+    $getAttributes() {
         let attributes = {};
         let relations = this.#model.relations.keys;
 
