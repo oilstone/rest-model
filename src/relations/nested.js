@@ -22,7 +22,7 @@ class Nested extends Relation {
         return record;
     }
 
-    #scopedParentPath() {
+    #scopedParentPath(scope) {
         return new Path(this.localModel).setKey(scope.recordScope.key);
     }
 }
