@@ -12,8 +12,8 @@ class Nested extends Relation {
         return query;
     }
 
-    record(scope) {
-        let record = this.foreignModel.record();
+    record(scope, attributes) {
+        let record = this.foreignModel.record(attributes);
 
         record.$path.prepend(
             this.#scopedParentPath(scope)

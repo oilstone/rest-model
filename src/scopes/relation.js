@@ -20,8 +20,8 @@ class Relation {
         return this.#relation.query(this);
     }
 
-    record() {
-        return this.#relation.record(this);
+    record(attributes) {
+        return this.#relation.record(this, attributes);
     }
 }
 

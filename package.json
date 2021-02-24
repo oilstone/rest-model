@@ -1,6 +1,6 @@
 {
 	"name": "@oilstone/rest-model",
-	"version": "1.2.02",
+	"version": "1.2.3",
 	"main": "dist/rest-model.js",
 	"devDependencies": {
 		"@babel/core": "^7.12.3",
