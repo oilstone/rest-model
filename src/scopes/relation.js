@@ -19,6 +19,10 @@ class Relation {
     query() {
         return this.#relation.query(this);
     }
+
+    record() {
+        return this.#relation.record(this);
+    }
 }
 
 export default Relation;

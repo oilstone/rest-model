@@ -6,10 +6,24 @@ class Nested extends Relation {
         let query = this.foreignModel.query();
 
         query.path.prepend(
-            new Path(this.localModel).setKey(scope.recordScope.key)
+            this.#scopedParentPath(scope)
         );
 
         return query;
+    }
+
+    record(scope) {
+        let record = this.foreignModel.record();
+
+        record.$path.prepend(
+            this.#scopedParentPath(scope)
+        );
+
+        return record;
+    }
+
+    #scopedParentPath() {
+        return new Path(this.localModel).setKey(scope.recordScope.key);
     }
 }
 
