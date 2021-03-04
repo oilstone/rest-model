@@ -95,6 +95,8 @@ class Collectable extends Query {
             this.model.events.fire('fetchedOne', record);
 
             return record;
+        }).catch(error => {
+            throw RestModel.adapter.unpack(this.$model, error.response);
         });
     }
 
@@ -109,8 +111,9 @@ class Collectable extends Query {
             this.model.events.fire('fetchedMany', collection);
 
             return collection;
+        }).catch(error => {
+            throw RestModel.adapter.unpack(this.$model, error.response);
         });
-
     }
 
     first() {

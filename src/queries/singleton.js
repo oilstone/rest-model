@@ -11,6 +11,8 @@ class Singleton extends Query {
             this.model.events.fire('fetched', record);
 
             return record;
+        }).catch(error => {
+            throw RestModel.adapter.unpack(this.$model, error.response);
         });
     }
 }
