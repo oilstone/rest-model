@@ -4,8 +4,6 @@ import Singleton from './singleton';
 import AccessToken from './access-token';
 import axios from 'axios';
 
-console.log('run rest model index file');
-
 axios.interceptors.response.use(null, error => {
     if (error.config && error.response && error.response.status === 401) {
         return new Promise(resolve => {

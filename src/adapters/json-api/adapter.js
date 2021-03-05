@@ -19,8 +19,6 @@ class Adapter {
                 return unpacker.data();
 
             default:
-                console.log('default in unpacker, throwing error');
-
                 return unpacker.error();
         }
     }

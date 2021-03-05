@@ -17,8 +17,6 @@ class Unpacker {
     }
 
     error() {
-        console.log('returnng errors from unpacker', this.#payload.data.errors);
-
         return this.#payload.data.errors;
     }
 
