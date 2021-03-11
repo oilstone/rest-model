@@ -55,6 +55,12 @@ class Record {
 
         return this;
     }
+
+    $resolve(relation) {
+        return this.#model.scope(
+            this[this.#model.getPrimaryKey()]
+        ).resolve(relation);
+    }
 }
 
 export default Record;
