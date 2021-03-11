@@ -22,6 +22,12 @@ class Nested extends Relation {
         return record;
     }
 
+    collection(scope, items) {
+        return items.map(item => {
+            return this.record(scope, item);
+        })
+    }
+
     #scopedParentPath(scope) {
         return new Path(this.localModel).setKey(scope.recordScope.key);
     }

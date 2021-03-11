@@ -54,14 +54,6 @@ class Relation {
     getBinding() {
         return this.#binding;
     }
-
-    hydrate(data) {
-        if (Array.isArray(data)) {
-            return this.getForeignModel().collection(data);
-        }
-
-        return this.getForeignModel().record(data);
-    }
 }
 
 export default Relation;

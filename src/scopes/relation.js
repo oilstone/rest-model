@@ -23,6 +23,18 @@ class Relation {
     record(attributes) {
         return this.#relation.record(this, attributes);
     }
+
+    collection(items) {
+        return this.#relation.collection(this, items);
+    }
+
+    hydrate(data) {
+        if (Array.isArray(data)) {
+            return this.collection(data);
+        }
+
+        return this.record(data);
+    }
 }
 
 export default Relation;

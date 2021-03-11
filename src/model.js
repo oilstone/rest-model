@@ -96,8 +96,8 @@ class Model {
         return this.#primaryKey;
     }
 
-    set primaryKey(key) {
-        return this.setPrimaryKey(key);
+    set primaryKey(value) {
+        this.setPrimaryKey(value);
     }
 
     setPrimaryKey(key) {
@@ -130,10 +130,11 @@ class Model {
 
         // noinspection JSUnresolvedFunction
         let record = this.newRecord().$fill(attributes);
+        let scope = this.scope(record[this.getPrimaryKey()]);
 
         this.#relations.keys.forEach(key => {
             if (key in record) {
-                record[key] = this.#relations.get(key).hydrate(attributes[key]);
+                record[key] = scope.resolve(key).hydrate(attributes[key]);
             }
         });
 
