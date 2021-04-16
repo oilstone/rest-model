@@ -5,9 +5,9 @@ class Singleton extends Record {
     $save() {
         this.$model.events.fire('updating', this);
 
-        if (!this.$isDirty()) {
-            return Promise.resolve(this);
-        }
+        // if (!this.$isDirty()) {
+        //     return Promise.resolve(this);
+        // }
 
         return this.$model.http.patch(
             this.$path.resolve(),

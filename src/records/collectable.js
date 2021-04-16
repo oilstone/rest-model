@@ -22,9 +22,9 @@ class Collectable extends Record {
     #update() {
         this.$model.events.fire('updating', this);
 
-        if (!this.$isDirty()) {
-            return Promise.resolve(this);
-        }
+        // if (!this.$isDirty()) {
+        //     return Promise.resolve(this);
+        // }
 
         return this.$model.getHttp().patch(
             this.$path.setKey(this.$attributes[this.$model.primaryKey]).resolve(),
