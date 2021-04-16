@@ -6,9 +6,30 @@ class Record {
 
     #path;
 
+    #attributes;
+
     constructor(model) {
         this.#model = model;
         this.#path = new Path(model);
+
+        return new Proxy(
+            this,
+            {
+                get: (target, property) => {
+                    console.log('call get on proxy');
+                    if (Reflect.has(this, property)) {
+                        return Reflect.get(this, property);
+                    }
+
+                    return this.#attributes[property];
+                },
+
+                set: (target, property, value) => {
+                    console.log('call set on proxy');
+                    this.#attributes[property] = value;
+                }
+            }
+        );
     }
 
     get $model() {
@@ -32,16 +53,7 @@ class Record {
     }
 
     $getAttributes() {
-        let attributes = {};
-        let relations = this.#model.relations.keys;
-
-        for(let prop in this) {
-            if(typeof this[prop] !== 'function' && relations.indexOf(prop) === -1) {
-                attributes[prop] = this[prop];
-            }
-        }
-
-        return attributes;
+        return this.#attributes;
     }
 
     $mix(mixins) {
