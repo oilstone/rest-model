@@ -62,7 +62,7 @@ class Collectable extends Record {
     }
 
     $resolved() {
-        return (this.$model.primaryKey in this && this.$attributes[this.$model.primaryKey]);
+        return (this.$model.primaryKey in this.$attributes && this.$attributes[this.$model.primaryKey]);
     }
 }
 
