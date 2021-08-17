@@ -2,34 +2,34 @@ import Path from '../path';
 import Blender from '@oilstone/blender';
 
 class Record {
-    #model;
+    _model;
 
-    #path;
+    _path;
 
-    #attributes = {};
+    _attributes = {};
 
-    #dirty = false;
+    _dirty = false;
 
     constructor(model) {
-        this.#model = model;
-        this.#path = new Path(model);
+        this._model = model;
+        this._path = new Path(model);
 
         return new Proxy(
             this,
             {
                 get: (target, property) => {
-                    if (Reflect.has(this, property)) {
-                        return Reflect.get(this, property);
+                    if (Reflect.has(target, property)) {
+                        return Reflect.get(target, property);
                     }
 
-                    return this.$attributes[property];
+                    return target.$attributes[property];
                 },
 
                 set: (target, property, value) => {
-                    if (this.$attributes[property] !== value) {
-                        this.$attributes[property] = value;
+                    if (target.$attributes[property] !== value) {
+                        target.$attributes[property] = value;
 
-                        this.#dirty = true;
+                        target._dirty = true;
                     }
 
                     return true;
@@ -43,7 +43,7 @@ class Record {
     }
 
     $getModel() {
-        return this.#model;
+        return this._model;
     }
 
     get $path() {
@@ -51,7 +51,7 @@ class Record {
     }
 
     $getPath() {
-        return this.#path;
+        return this._path;
     }
 
     get $attributes() {
@@ -59,7 +59,7 @@ class Record {
     }
 
     $getAttributes() {
-        return this.#attributes;
+        return this._attributes;
     }
 
     $mix(mixins) {
@@ -75,13 +75,9 @@ class Record {
     }
 
     $resolve(relation) {
-        return this.#model.scope(
-            this.$attributes[this.#model.getPrimaryKey()]
+        return this._model.scope(
+            this.$attributes[this._model.getPrimaryKey()]
         ).resolve(relation);
-    }
-
-    $isDirty() {
-        return this.#dirty;
     }
 }
 
