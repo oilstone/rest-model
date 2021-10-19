@@ -56,14 +56,14 @@ class Unpacker {
                 relations[type] = [];
 
                 relationships[type].data.forEach(relation => {
-                    let record = this.mapRelation(type, relation);
+                    let record = this.mapRelation(relation.type, relation);
 
                     if (record) {
                         relations[type].push(record);
                     }
                 });
             } else {
-                let record = this.mapRelation(type, relationships[type].data);
+                let record = this.mapRelation(relationships[type].data.type, relationships[type].data);
 
                 if (record) {
                     relations[type] = record;
