@@ -27,7 +27,7 @@ class Collectable extends Model {
     }
 
     destroy(id) {
-        return this.newRecord().fill({id}).$destroy();
+        return this.newRecord().$fill({id}).$destroy();
     }
 }
 
