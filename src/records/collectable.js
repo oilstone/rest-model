@@ -64,10 +64,6 @@ class Collectable extends Record {
     $resolved() {
         return (this.$model.primaryKey in this.$attributes && this.$attributes[this.$model.primaryKey]);
     }
-
-    destroy(id) {
-        return this.newRecord().fill({id}).$destroy();
-    }
 }
 
 export default Collectable;

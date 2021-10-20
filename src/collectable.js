@@ -25,6 +25,10 @@ class Collectable extends Model {
     all() {
         return this.query().get();
     }
+
+    destroy(id) {
+        return this.newRecord().fill({id}).$destroy();
+    }
 }
 
 export default Collectable;
