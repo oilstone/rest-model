@@ -1,9 +1,9 @@
-import AccessToken from './access-token';
-import Collectable from './collectable';
-import CollectableRecord from './records/collectable';
-import Path from './path';
 import RestModel from './rest-model';
+import Collectable from './collectable';
 import Singleton from './singleton';
+import AccessToken from './access-token';
+import Path from './path';
+import CollectableRecord from './records/collectable';
 import axios from 'axios';
 
 axios.interceptors.response.use(null, error => {
@@ -23,12 +23,12 @@ axios.interceptors.response.use(null, error => {
 });
 
 export {
-    AccessToken,
-    Collectable,
-    CollectableRecord,
-    Path,
     RestModel,
+    Collectable,
     Singleton,
+    AccessToken,
+    Path,
+    CollectableRecord
 };
 
 export default RestModel;
