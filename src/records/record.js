@@ -22,17 +22,11 @@ class Record {
                         return Reflect.get(target, property);
                     }
 
-                    return target.$attributes[property];
+                    return target.$getAttribute(property);
                 },
 
                 set: (target, property, value) => {
-                    if (target.$attributes[property] !== value) {
-                        target.$attributes[property] = value;
-
-                        target._dirty = true;
-                    }
-
-                    return true;
+                    return target.$setAttribute(property, value);
                 }
             }
         );
@@ -60,6 +54,20 @@ class Record {
 
     $getAttributes() {
         return this._attributes;
+    }
+
+    $getAttribute(property) {
+        return this.$attributes[property];
+    }
+
+    $setAttribute(property, value) {
+        if (this.$attributes[property] !== value) {
+            this.$attributes[property] = value;
+
+            this._dirty = true;
+        }
+
+        return true;
     }
 
     $mix(mixins) {

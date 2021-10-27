@@ -96,7 +96,11 @@ class Collectable extends Query {
 
             return record;
         }).catch(error => {
-            throw RestModel.adapter.unpack(this.$model, error.response);
+            if (!error.response) {
+                throw error;
+            }
+
+            throw RestModel.adapter.unpack(this.model, error.response);
         });
     }
 
@@ -112,7 +116,11 @@ class Collectable extends Query {
 
             return collection;
         }).catch(error => {
-            throw RestModel.adapter.unpack(this.$model, error.response);
+            if (!error.response) {
+                throw error;
+            }
+
+            throw RestModel.adapter.unpack(this.model, error.response);
         });
     }
 
