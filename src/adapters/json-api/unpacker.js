@@ -52,6 +52,11 @@ class Unpacker {
         let relations = {};
 
         for (let type in relationships) {
+            if (relationships[type].data === null) {
+                relations[type] = null;
+                continue;
+            }
+
             if (Array.isArray(relationships[type].data)) {
                 relations[type] = [];
 
@@ -62,12 +67,14 @@ class Unpacker {
                         relations[type].push(record);
                     }
                 });
-            } else {
-                let record = this.mapRelation(relationships[type].data.type, relationships[type].data);
 
-                if (record) {
-                    relations[type] = record;
-                }
+                continue;
+            }
+
+            let record = this.mapRelation(relationships[type].data.type, relationships[type].data);
+
+            if (record) {
+                relations[type] = record;
             }
         }
 
