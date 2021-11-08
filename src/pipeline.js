@@ -6,25 +6,27 @@ class Pipeline {
     }
 
     pieces(path) {
-        let model = this.#model;
-        let resolved = [];
-        let pieces = path.split('.');
+        return path.split('.');
 
-        while (pieces.length) {
-            let piece = pieces.shift();
-            let relation = model.relations.get(piece);
-
-            if (!relation) {
-                resolved.push(piece);
-                break;
-            }
-
-            resolved.push(relation.foreignModel.type || piece);
-
-            model = relation.foreignModel;
-        }
-
-        return resolved;
+        // let model = this.#model;
+        // let resolved = [];
+        // let pieces = path.split('.');
+        //
+        // while (pieces.length) {
+        //     let piece = pieces.shift();
+        //     let relation = model.relations.get(piece);
+        //
+        //     if (!relation) {
+        //         resolved.push(piece);
+        //         break;
+        //     }
+        //
+        //     resolved.push(relation.foreignModel.type || piece);
+        //
+        //     model = relation.foreignModel;
+        // }
+        //
+        // return resolved;
     }
 
     resolve(path) {
