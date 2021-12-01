@@ -5,12 +5,13 @@ import AccessToken from './access-token';
 import axios from 'axios';
 
 axios.interceptors.response.use(null, error => {
-    if (error.config && error.response && error.response.status === 401) {
+    if (error.config && error.response && (error.response.status === 401 || error.response.status === 403)) {
         return new Promise(resolve => {
             let token = RestModel.accessToken;
 
             if (token) {
                 token.refresh().then(() => {
+                    error.config.headers = RestModel.adapter.headers();
                     resolve(axios.request(error.config));
                 });
             }

@@ -38,7 +38,7 @@ class AccessToken {
         return this.#value;
     }
 
-    set Value(value) {
+    set value(value) {
         return this.setValue(value);
     }
 
