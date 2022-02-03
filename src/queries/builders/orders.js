@@ -21,7 +21,7 @@ class Orders {
     resolve(pipeline, direction) {
         let pieces = this.#pipeline.pieces(pipeline);
         let field = pieces.pop();
-        let type = pieces.length ? pieces.pop() : this.#model.type;
+        let type = pieces.length ? pieces.join('.') : this.#model.type;
 
         if (typeof this.#items[type] === 'undefined') {
             this.#items[type] = {};
