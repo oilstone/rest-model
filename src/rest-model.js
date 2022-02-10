@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Registry from './registry';
 import Adapter from './adapters/json-api/adapter';
 
@@ -62,6 +63,14 @@ class RestModel {
 
     static resolve(name) {
         return Registry.get(name);
+    }
+
+    static addRequestInterceptor(onFulfilled, onRejected) {
+        axios.interceptors.request.use(onFulfilled, onRejected);
+    }
+
+    static addResponseInterceptor(onFulfilled, onRejected) {
+        axios.interceptors.response.use(onFulfilled, onRejected);
     }
 }
 
