@@ -13,6 +13,8 @@ class Collectable extends Query {
 
     #offsets;
 
+    #searchQuery = '';
+
     constructor(model, path) {
         super(model, path);
 
@@ -54,6 +56,14 @@ class Collectable extends Query {
         return this.#offsets;
     }
 
+    get searchQuery() {
+        return this.getSearchQuery();
+    }
+
+    getSearchQuery() {
+        return this.#searchQuery;
+    }
+
     where(...args) {
         this.#filters.where(...args);
 
@@ -82,6 +92,10 @@ class Collectable extends Query {
         this.#offsets.resolve(...args);
 
         return this;
+    }
+
+    search(query) {
+        this.#searchQuery = query;
     }
 
     find(id) {

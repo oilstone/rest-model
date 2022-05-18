@@ -68,6 +68,10 @@ class Adapter {
             if(query.offsets.count() > 0) {
                 params.offset = TypeConstraint.serialize(query.model, query.offsets);
             }
+
+            if(query.searchQuery) {
+                params.search = query.searchQuery;
+            }
         }
 
         return params;
