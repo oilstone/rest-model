@@ -29,6 +29,8 @@ class Condition {
                 return '=like=';
             case 'not in':
                 return '=not-in=';
+            case 'has':
+                return '=has=';
             default:
                 return operator;
         }
