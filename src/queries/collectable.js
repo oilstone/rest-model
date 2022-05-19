@@ -96,6 +96,8 @@ class Collectable extends Query {
 
     search(query) {
         this.#searchQuery = query;
+
+        return this;
     }
 
     find(id) {
