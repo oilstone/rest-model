@@ -15,6 +15,8 @@ class Query {
 
     #fields = {};
 
+    #params = {};
+
     constructor(model, path) {
         this.#model = model;
         this.#path = path;
@@ -58,6 +60,14 @@ class Query {
         return this.getFields();
     }
 
+    getParams() {
+        return this.#params;
+    }
+
+    get params() {
+        return this.getParams();
+    }
+
     getRelations() {
         return this.#relations;
     }
@@ -80,6 +90,12 @@ class Query {
 
     select(...pipelines) {
         this.#fields.resolve(pipelines);
+
+        return this;
+    }
+
+    param(key, value) {
+        this.#params[key] = value;
 
         return this;
     }

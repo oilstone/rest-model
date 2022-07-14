@@ -42,7 +42,8 @@ class Adapter {
     }
 
     static params(query) {
-        let params = {};
+        let params = Object.assign({}, query.params);
+
 
         if(query.relations.length) {
             params.include = RelationSerializer.serialize(query.relations);
