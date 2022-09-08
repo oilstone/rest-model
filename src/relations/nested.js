@@ -28,6 +28,10 @@ class Nested extends Relation {
         })
     }
 
+    destroy(id) {
+        return this.record().$fill({id}).$destroy();
+    }
+
     #scopedParentPath(scope) {
         return new Path(this.localModel).setKey(scope.recordScope.key);
     }
