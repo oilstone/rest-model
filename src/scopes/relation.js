@@ -28,6 +28,10 @@ class Relation {
         return this.#relation.collection(this, items);
     }
 
+    destroy(id) {
+        return this.#relation.destroy(this, id);
+    }
+
     hydrate(data) {
         if (Array.isArray(data)) {
             return this.collection(data);
