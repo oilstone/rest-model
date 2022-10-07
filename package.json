@@ -1,6 +1,6 @@
 {
 	"name": "@oilstone/rest-model",
-	"version": "1.16.0",
+	"version": "1.17.0",
 	"main": "dist/rest-model.js",
 	"license": "MIT",
 	"devDependencies": {
@@ -14,8 +14,8 @@
 		"webpack-cli": "^4.2.0"
 	},
 	"dependencies": {
-		"@oilstone/blender": "^1.0.3",
-		"@oilstone/events": "^1.0.2",
+		"@oilstone/blender": "^1.1.0",
+		"@oilstone/events": "^1.2.0",
 		"axios": "^0.21.0",
 		"qs": "^6.9.4"
 	}

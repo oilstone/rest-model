@@ -8,7 +8,8 @@ module.exports = {
         filename: 'rest-model.js',
         library: 'rest-model',
         libraryTarget: 'umd',
-        publicPath: '/'
+        publicPath: '/',
+        globalObject: 'this',
     },
     devServer: {
         contentBase: './dist',
