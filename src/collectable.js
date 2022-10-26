@@ -2,7 +2,7 @@ import Model from './model';
 import Query from './queries/collectable';
 import Record from './records/collectable';
 import Path from "./path";
-import Collection from "./Collection";
+import Collection from "./collection";
 
 class Collectable extends Model {
     queryBuilder() {
