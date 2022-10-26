@@ -1,5 +1,6 @@
 import Relation from './relation'
 import Path from '../path';
+import Collection from '../collection';
 
 class Nested extends Relation {
     query(scope) {
@@ -10,6 +11,10 @@ class Nested extends Relation {
         );
 
         return query;
+    }
+
+    hydrateOne(scope, data) {
+        return this.record(scope, data.attributes).$setMeta(data.meta);
     }
 
     record(scope, attributes) {
@@ -23,9 +28,25 @@ class Nested extends Relation {
     }
 
     collection(scope, items) {
-        return items.map(item => {
-            return this.record(scope, item);
-        })
+        const collection = new Collection();
+
+        items.forEach(item => {
+            collection.push(this.record(scope, item));
+        });
+
+        return collection;
+    }
+
+    hydrateMany(scope, data) {
+        const collection = this.collection(scope,[]).setMeta(data.meta);
+
+        data.items.forEach(item => {
+            collection.push(
+                this.hydrateOne(scope, item)
+            );
+        });
+
+        return collection;
     }
 
     destroy(scope, id) {

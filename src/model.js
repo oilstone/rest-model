@@ -125,6 +125,29 @@ class Model {
         this.#events.listen(observer);
     }
 
+    hydrateOne(data) {
+        this.#events.fire('hydrating', data.attributes);
+
+        // noinspection JSUnresolvedFunction
+        let record = this.newRecord().$fill(data.attributes).$setMeta(data.meta);
+        let scope = this.scope(record[this.getPrimaryKey()]);
+
+        this.#relations.keys.forEach(key => {
+            if (record.$hasAttribute(key)) {
+                record.$setRelation(
+                    key,
+                    scope.resolve(key).hydrate(data.attributes[key])
+                );
+
+                record.$removeAttribute(key);
+            }
+        });
+
+        this.#events.fire('hydrated', record);
+
+        return record.$mix(this.#mixins.record);
+    }
+
     record(attributes) {
         this.#events.fire('making', attributes);
 
@@ -133,8 +156,13 @@ class Model {
         let scope = this.scope(record[this.getPrimaryKey()]);
 
         this.#relations.keys.forEach(key => {
-            if (key in record) {
-                record[key] = scope.resolve(key).hydrate(attributes[key]);
+            if (record.$hasAttribute(key)) {
+                record.$setRelation(
+                    key,
+                    scope.resolve(key).make(attributes[key])
+                );
+
+                record.$removeAttribute(key);
             }
         });
 

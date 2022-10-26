@@ -18,25 +18,35 @@ class Unpacker {
         return this.#payload.data.errors;
     }
 
-    data() {
-        let data = this.#payload.data.data;
-
-        this.buildRelationMap();
-
-        if (!Array.isArray(data)) {
-            return this.record(data);
-        }
-
-        return this.collection(data);
+    meta() {
+        return this.#payload.data.meta;
     }
 
-    collection(collection) {
-        return collection.map(item => {
-            return this.record(item);
+    data() {
+        this.buildRelationMap();
+
+        if (!Array.isArray(this.#payload.data.data)) {
+            return this.record(this.#payload.data.data);
+        }
+
+        return this.collection(this.#payload.data);
+    }
+
+    collection(data) {
+        const collection = {
+            meta: data.meta || {},
+            items: []
+        };
+
+        data.data.forEach(item => {
+            collection.items.push(this.record(item));
         });
+
+        return collection;
     }
 
     record(record) {
+        const meta = record.meta || {};
         let attributes = Object.assign({}, record.attributes);
 
         attributes[this.#model.primaryKey] = record[this.#model.primaryKey];
@@ -45,7 +55,10 @@ class Unpacker {
             attributes = Object.assign({}, attributes, this.relations(record.relationships));
         }
 
-        return attributes;
+        return {
+            meta,
+            attributes
+        };
     }
 
     relations(relationships) {
@@ -58,13 +71,26 @@ class Unpacker {
             }
 
             if (Array.isArray(relationships[type].data)) {
-                relations[type] = [];
+                let collectionPath;
+
+                if (this.#model.relations.has(type)) {
+                    relations[type] = {
+                        meta: relationships[type].meta || {},
+                        items: []
+                    };
+
+                    collectionPath = relations[type].items;
+                } else {
+                    // The relation has been included in the query but not defined on the model
+                    relations[type] = [];
+                    collectionPath = relations[type];
+                }
 
                 relationships[type].data.forEach(relation => {
                     let record = this.mapRelation(relation.type, relation);
 
                     if (record) {
-                        relations[type].push(record);
+                        collectionPath.push(record);
                     }
                 });
 

@@ -104,9 +104,7 @@ class Collectable extends Query {
         this.model.events.fire('fetchingOne', this);
 
         return this.model.http.get(this.path.setKey(id).resolve(), this.buildRequestConfig()).then(response => {
-            let record = this.model.record(
-                RestModel.adapter.unpack(this.model, response)
-            );
+            const record = this.model.hydrateOne(RestModel.adapter.unpack(this.model, response));
 
             this.model.events.fire('fetchedOne', record);
 
@@ -124,7 +122,7 @@ class Collectable extends Query {
         this.model.events.fire('fetchingMany', this);
 
         return this.model.http.get(this.path.resolve(), this.buildRequestConfig()).then(response => {
-            let collection = this.model.collection(
+            let collection = this.model.hydrateMany(
                 RestModel.adapter.unpack(this.model, response)
             );
 

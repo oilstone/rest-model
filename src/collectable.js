@@ -2,6 +2,7 @@ import Model from './model';
 import Query from './queries/collectable';
 import Record from './records/collectable';
 import Path from "./path";
+import Collection from "./Collection";
 
 class Collectable extends Model {
     queryBuilder() {
@@ -16,10 +17,26 @@ class Collectable extends Model {
         return this.record(attributes).$save();
     }
 
-    collection(data) {
-        return data.map(record => {
-            return this.record(record);
+    hydrateMany(data) {
+        const collection = this.collection([]).setMeta(data.meta);
+
+        data.items.forEach(item => {
+            collection.push(
+                this.hydrateOne(item)
+            );
         });
+
+        return collection;
+    }
+
+    collection(data) {
+        const collection = new Collection();
+
+        data.forEach(record => {
+            collection.push(this.record(record));
+        });
+
+        return collection;
     }
 
     all() {

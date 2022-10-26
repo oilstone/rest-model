@@ -1,4 +1,5 @@
 import Path from '../path';
+import Collection from '../collection';
 import Blender from '@oilstone/blender';
 
 class Record {
@@ -6,7 +7,11 @@ class Record {
 
     _path;
 
+    _meta = {};
+
     _attributes = {};
+
+    _relations = {};
 
     _dirty = false;
 
@@ -48,6 +53,24 @@ class Record {
         return this._path;
     }
 
+    get $meta() {
+        return this.$getMeta();
+    }
+
+    $getMeta() {
+        return this._meta;
+    }
+
+    set $meta(meta) {
+        return this.$setMeta(meta);
+    }
+
+    $setMeta(meta) {
+        this._meta = meta;
+
+        return this;
+    }
+
     get $attributes() {
         return this.$getAttributes();
     }
@@ -56,18 +79,50 @@ class Record {
         return this._attributes;
     }
 
-    $getAttribute(property) {
-        return this.$attributes[property];
+    $getAttribute(name) {
+        return this.$attributes[name];
     }
 
-    $setAttribute(property, value) {
-        if (this.$attributes[property] !== value) {
-            this.$attributes[property] = value;
+    $hasAttribute(name) {
+        return typeof this.$attributes[name] !== 'undefined';
+    }
+
+    $removeAttribute(name) {
+        delete this._attributes[name];
+
+        return this;
+    }
+
+    $setAttribute(name, value) {
+        if (this.$attributes[name] !== value) {
+            this.$attributes[name] = value;
 
             this._dirty = true;
         }
 
         return true;
+    }
+
+    get $relations() {
+        return this.$getRelations();
+    }
+
+    $getRelations() {
+        return this._relations;
+    }
+
+    $getRelation(name) {
+        return this.$relations[name];
+    }
+
+    $setRelation(name, value) {
+        this._relations[name] = value;
+
+        return true;
+    }
+
+    $hasRelation(name) {
+        return typeof this.$relations[name] !== 'undefined';
     }
 
     $mix(mixins) {
@@ -86,6 +141,24 @@ class Record {
         return this._model.scope(
             this.$attributes[this._model.getPrimaryKey()]
         ).resolve(relation);
+    }
+
+    $toObjectPrimitive() {
+        const primitive = Object.assign({}, this.$attributes);
+
+        primitive.$meta = this._meta;
+
+        for (let key in this._relations) {
+            if (this._relations[key] instanceof Collection) {
+                primitive[key] = this._relations[key].toArrayPrimitive();
+
+                continue;
+            }
+
+            primitive[key] = this._relations[key].$toObjectPrimitive();
+        }
+
+        return primitive;
     }
 }
 
