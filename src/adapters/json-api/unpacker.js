@@ -45,49 +45,60 @@ class Unpacker {
         return collection;
     }
 
-    record(record) {
-        const meta = record.meta || {};
-        let attributes = Object.assign({}, record.attributes);
+    attributes(data) {
+        let attributes = Object.assign({}, data.attributes);
 
-        attributes[this.#model.primaryKey] = record[this.#model.primaryKey];
+        attributes[this.#model.primaryKey] = data[this.#model.primaryKey];
 
-        if ('relationships' in record) {
-            attributes = Object.assign({}, attributes, this.relations(record.relationships));
+        if ('relationships' in data) {
+            attributes = Object.assign({}, attributes, this.relations(data.relationships));
         }
 
+        return attributes;
+    }
+
+    record(data) {
         return {
-            meta,
-            attributes
+            meta: data.meta || {},
+            attributes: this.attributes(data)
         };
+    }
+
+    relation(key, data) {
+        if (this.#model.relations.has(key)) {
+            return this.record(data);
+        }
+
+        return this.attributes(data);
     }
 
     relations(relationships) {
         let relations = {};
 
-        for (let type in relationships) {
-            if (relationships[type].data === null) {
-                relations[type] = null;
+        for (let key in relationships) {
+            if (relationships[key].data === null) {
+                relations[key] = null;
                 continue;
             }
 
-            if (Array.isArray(relationships[type].data)) {
+            if (Array.isArray(relationships[key].data)) {
                 let collectionPath;
 
-                if (this.#model.relations.has(type)) {
-                    relations[type] = {
-                        meta: relationships[type].meta || {},
+                if (this.#model.relations.has(key)) {
+                    relations[key] = {
+                        meta: relationships[key].meta || {},
                         items: []
                     };
 
-                    collectionPath = relations[type].items;
+                    collectionPath = relations[key].items;
                 } else {
                     // The relation has been included in the query but not defined on the model
-                    relations[type] = [];
-                    collectionPath = relations[type];
+                    relations[key] = [];
+                    collectionPath = relations[key];
                 }
 
-                relationships[type].data.forEach(relation => {
-                    let record = this.mapRelation(relation.type, relation);
+                relationships[key].data.forEach(relation => {
+                    let record = this.mapRelation(key, relation.type, relation);
 
                     if (record) {
                         collectionPath.push(record);
@@ -97,24 +108,24 @@ class Unpacker {
                 continue;
             }
 
-            let record = this.mapRelation(relationships[type].data.type, relationships[type].data);
+            let record = this.mapRelation(key, relationships[key].data.type, relationships[key].data);
 
             if (record) {
-                relations[type] = record;
+                relations[key] = record;
             }
         }
 
         return relations;
     }
 
-    mapRelation(type, relation) {
+    mapRelation(relationKey, type, relation) {
         let record = null;
 
         if (relation) {
-            let key = `${type}:${relation.id}`;
+            let mapKey = `${type}:${relation.id}`;
 
-            if (key in this.#relationMap) {
-                record = this.record(this.#relationMap[key]);
+            if (mapKey in this.#relationMap) {
+                record = this.relation(relationKey, this.#relationMap[mapKey]);
             }
         }
 
