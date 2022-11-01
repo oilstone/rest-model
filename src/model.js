@@ -126,24 +126,20 @@ class Model {
     }
 
     hydrateOne(data) {
-        this.#events.fire('hydrating', data.attributes);
+        this.#events.fire('hydratingOne', data.attributes);
 
         // noinspection JSUnresolvedFunction
         let record = this.newRecord().$fill(data.attributes).$setMeta(data.meta);
         let scope = this.scope(record[this.getPrimaryKey()]);
 
-        this.#relations.keys.forEach(key => {
-            if (record.$hasAttribute(key)) {
-                record.$setRelation(
-                    key,
-                    scope.resolve(key).hydrate(data.attributes[key])
-                );
+        for (let key in data.relations) {
+            record.$setRelation(
+                key,
+                scope.resolve(key).hydrate(data.relations[key])
+            );
+        }
 
-                record.$removeAttribute(key);
-            }
-        });
-
-        this.#events.fire('hydrated', record);
+        this.#events.fire('hydratedOne', record);
 
         return record.$mix(this.#mixins.record);
     }
@@ -153,18 +149,6 @@ class Model {
 
         // noinspection JSUnresolvedFunction
         let record = this.newRecord().$fill(attributes);
-        let scope = this.scope(record[this.getPrimaryKey()]);
-
-        this.#relations.keys.forEach(key => {
-            if (record.$hasAttribute(key)) {
-                record.$setRelation(
-                    key,
-                    scope.resolve(key).make(attributes[key])
-                );
-
-                record.$removeAttribute(key);
-            }
-        });
 
         this.#events.fire('made', record);
 
@@ -188,8 +172,10 @@ class Model {
             callback(relation);
         }
 
+        relation.setKey(name);
+
         if (!relation.binding) {
-            relation.bind(name);
+            relation.setBinding(name);
         }
     }
 

@@ -23,14 +23,20 @@ class Record {
             this,
             {
                 get: (target, property) => {
-                    if (Reflect.has(target, property)) {
-                        return Reflect.get(target, property);
+                    if (typeof this[property] !== 'undefined') {
+                        return this[property];
                     }
 
-                    return target.$getAttribute(property);
+                    return this.$getAttribute(property);
                 },
 
                 set: (target, property, value) => {
+                    if (typeof this[property] !== 'undefined') {
+                        this[property] = value;
+
+                        return true;
+                    }
+
                     return target.$setAttribute(property, value);
                 }
             }

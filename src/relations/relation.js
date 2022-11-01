@@ -5,7 +5,11 @@ class Relation {
 
     #foreignModel;
 
+    #key;
+
     #binding;
+
+    #includeKey;
 
     constructor(localModel) {
         this.#localModel = localModel;
@@ -41,7 +45,43 @@ class Relation {
         return this;
     }
 
-    bind(binding) {
+    setKey(name) {
+        this.#key = name;
+
+        return this;
+    }
+
+    set key(name) {
+        this.setKey(name);
+    }
+
+    getKey() {
+        return this.#key;
+    }
+
+    get key() {
+        return this.getKey();
+    }
+
+    setIncludeKey(name) {
+        this.#includeKey = name;
+
+        return this;
+    }
+
+    set includeKey(name) {
+        this.setIncludeKey(name);
+    }
+
+    getIncludeKey() {
+        return this.#includeKey;
+    }
+
+    get includeKey() {
+        return this.getIncludeKey();
+    }
+
+    setBinding(binding) {
         this.#binding = binding;
 
         return this;

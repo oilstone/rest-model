@@ -14,11 +14,17 @@ class Nested extends Relation {
     }
 
     hydrateOne(scope, data) {
-        return this.record(scope, data.attributes).$setMeta(data.meta);
+        const record = this.foreignModel.hydrateOne(data);
+
+        record.$path.prepend(
+            this.#scopedParentPath(scope)
+        );
+
+        return record;
     }
 
     record(scope, attributes) {
-        let record = this.foreignModel.record(attributes);
+        const record = this.foreignModel.record(attributes);
 
         record.$path.prepend(
             this.#scopedParentPath(scope)
@@ -38,7 +44,7 @@ class Nested extends Relation {
     }
 
     hydrateMany(scope, data) {
-        const collection = this.collection(scope,[]).setMeta(data.meta);
+        const collection = new Collection().setMeta(data.meta);
 
         data.items.forEach(item => {
             collection.push(
