@@ -7,7 +7,7 @@ class Pipeline {
 
     pieces(path) {
         let model = this.#model;
-        const resolved = [];
+        let resolved = [];
         let pieces = path.split('.');
 
         while (pieces.length) {
@@ -16,6 +16,7 @@ class Pipeline {
 
             if (!relation) {
                 resolved.push(piece);
+                resolved = resolved.concat(pieces);
                 break;
             }
 
