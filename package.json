@@ -1,6 +1,6 @@
 {
 	"name": "@oilstone/rest-model",
-	"version": "1.18.4",
+	"version": "1.18.5",
 	"main": "dist/rest-model.js",
 	"license": "MIT",
 	"devDependencies": {
