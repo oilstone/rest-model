@@ -96,7 +96,7 @@ class Unpacker {
                     }
                 }
             } else {
-                if (relationship.date) {
+                if (relationship.data) {
                     const relationDefinition = relationDefinitions.getByType(relationship.data.type);
 
                     if (relationDefinition) {
