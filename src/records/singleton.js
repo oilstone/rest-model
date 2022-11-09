@@ -14,7 +14,7 @@ class Singleton extends Record {
             RestModel.adapter.repack(this.$model, this),
             {headers: RestModel.adapter.headers()}
         ).then(response => {
-            this.$fill(RestModel.adapter.unpack(this.$model, response));
+            this.$fill(RestModel.adapter.unpack(this.$model, response).attributes);
             this.$model.events.fire('updated', this);
 
             return this;
