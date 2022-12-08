@@ -1,11 +1,19 @@
-import axios from 'axios';
 import Registry from './registry';
 import Adapter from './adapters/json-api/adapter';
 
 class RestModel {
+    static #http;
     static #baseUrl = '';
     static #accessToken;
     static #adapter = Adapter;
+
+    static set http(url) {
+        RestModel.setHttp(url);
+    }
+
+    static get http() {
+        return RestModel.getHttp();
+    }
 
     static set baseUrl(url) {
         RestModel.setBaseUrl(url);
@@ -29,6 +37,14 @@ class RestModel {
 
     static get adapter() {
         return RestModel.getAdapter();
+    }
+
+    static setHttp(http) {
+        RestModel.#http = http;
+    }
+
+    static getHttp() {
+        return RestModel.#http;
     }
 
     static setAdapter(adapter) {
@@ -66,11 +82,11 @@ class RestModel {
     }
 
     static addRequestInterceptor(onFulfilled, onRejected) {
-        axios.interceptors.request.use(onFulfilled, onRejected);
+        RestModel.getHttp().interceptors.request.use(onFulfilled, onRejected);
     }
 
     static addResponseInterceptor(onFulfilled, onRejected) {
-        axios.interceptors.response.use(onFulfilled, onRejected);
+        RestModel.getHttp().response.use(onFulfilled, onRejected);
     }
 }
 

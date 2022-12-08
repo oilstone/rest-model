@@ -1,6 +1,6 @@
 {
 	"name": "@oilstone/rest-model",
-	"version": "1.18.9",
+	"version": "2.0.0",
 	"main": "dist/rest-model.js",
 	"license": "MIT",
 	"devDependencies": {
@@ -16,7 +16,6 @@
 	"dependencies": {
 		"@oilstone/blender": "^1.1.0",
 		"@oilstone/events": "^1.2.0",
-		"axios": "^1.2.1",
 		"qs": "^6.9.4"
 	}
 }
