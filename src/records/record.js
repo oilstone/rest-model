@@ -1,6 +1,6 @@
 import Path from '../path';
 import Collection from '../collection';
-import Blender from '@oilstone/blender';
+import { Blender } from '@oilstone/blender';
 
 class Record {
     _model;

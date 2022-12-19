@@ -1,5 +1,5 @@
 import Pipeline from '../pipeline';
-import Blender from '@oilstone/blender';
+import { Blender } from '@oilstone/blender';
 import RestModel from "../rest-model";
 import Fields from './builders/fields';
 import qs from "qs";

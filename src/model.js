@@ -1,5 +1,5 @@
-import Dispatcher from '@oilstone/events';
-import Blender from '@oilstone/blender';
+import { Dispatcher } from '@oilstone/events';
+import { Blender } from '@oilstone/blender';
 import Aggregate from './relations/aggregate';
 import Factory from './factory';
 import RecordScope from './scopes/record';
