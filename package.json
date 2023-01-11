@@ -1,21 +1,66 @@
 {
-	"name": "@oilstone/rest-model",
-	"version": "2.1.1",
-	"main": "dist/rest-model.js",
-	"license": "MIT",
-	"devDependencies": {
-		"@babel/core": "^7.12.3",
-		"@babel/plugin-proposal-class-properties": "^7.12.1",
-		"@babel/plugin-proposal-private-methods": "^7.12.1",
-		"@babel/plugin-proposal-private-property-in-object": "^7.12.1",
-		"babel-loader": "^8.2.1",
-		"clean-webpack-plugin": "^3.0.0",
-		"webpack": "^5.6.0",
-		"webpack-cli": "^4.2.0"
-	},
-	"dependencies": {
-		"@oilstone/blender": "^1.1.0",
-		"@oilstone/events": "^1.2.0",
-		"qs": "^6.9.4"
-	}
+  "name": "@oilstone/rest-model",
+  "version": "3.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "standard | snazzy",
+    "lint:fix": "standard --fix | snazzy",
+    "build": "npm run build:merge && babel ./dist/index.js --out-dir ./dist --source-maps",
+    "build:merge": "rm -rf ./dist/** && rollup lib/index.js --file dist/index.js --format 'cjs'",
+    "build:min": "minify ./dist/index.js --out-file ./dist/index.min.js --mangle.keepFnName --mangle.keepClassName --",
+    "build:full": "npm run build && npm run build:min",
+    "build:ci": "npm run lint && npm run build:full"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
+    }
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
+  },
+  "standard": {
+    "ignore": [
+      "node_modules/",
+      "dist/"
+    ]
+  },
+  "targets": "> 0.25%, not dead",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/oilstone/rest-model.git"
+  },
+  "author": "Online Solutions Ltd.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oilstone/rest-model/issues"
+  },
+  "homepage": "https://github.com/oilstone/rest-model#readme",
+  "devDependencies": {
+    "@babel/cli": "7.19.3",
+    "@babel/core": "7.19.6",
+    "@babel/preset-env": "7.19.4",
+    "@babel/register": "7.18.9",
+    "babel-minify": "0.5.2",
+    "babel-plugin-istanbul": "6.1.1",
+    "chai": "4.3.6",
+    "cross-env": "7.0.3",
+    "nyc": "15.1.0",
+    "rollup": "3.2.3",
+    "snazzy": "9.0.0",
+    "standard": "17.0.0"
+  },
+  "dependencies": {
+    "@oilstone/blender": "^2.0.0",
+    "@oilstone/events": "^2.0.0",
+    "qs": "^6.11.0"
+  }
 }
