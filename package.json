@@ -1,6 +1,6 @@
 {
   "name": "@oilstone/rest-model",
-  "version": "4.4.2",
+  "version": "4.4.3",
   "main": "dist/index.js",
   "scripts": {
     "lint": "standard | snazzy",
